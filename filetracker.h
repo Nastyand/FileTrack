@@ -2,13 +2,18 @@
 #define FILETRACKER_H
 
 #include <QObject>
+#include <QFileInfo>
+#include <QString>
+#include <QVector>
 
 class StateFile
 {
 public:
-    StateFile(QString);
+    StateFile(const QString& FN);
     ~StateFile();
-    GetState();
+    QString GetFileName();
+    qint64 GetSize();
+    bool GetExist();
 private:
     QString FileName;
     qint64 size;
@@ -19,17 +24,20 @@ class FileMonitor:public QObject
 {
     Q_OBJECT
     StateFile *objects;
-    QVector<FileState>objects;
+    QVector<StateFile>objects;
 public:
-    // explicit FileMonitor(const QString& FileName, QObject* parent = nullptr);
+    // explicit FileMonitor(QObject* parent = nullptr);
     FileMonitor();
     ~FileMonitor();
+    bool AddFile(QString FN);//Добавился ли файл
+    bool DelFile(QString FN);//Удалился ли файл
 signals:
-    void SizeChanged(qint64 newSize);
+    void FileCreated(const QString& FN);//Изменения при создании файла
+    void FileSizeChanged(const QString& FN, qint64 newSize);//Изменения размера файла
+    void FileDeleted(const QString& FN);//Изменения при удалении файла
 
 private slots:
-    void FileChanged(const QString& fileName);
-
+    void FileChanged(const QString& FN);
 };
 
 
