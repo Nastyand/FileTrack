@@ -8,3 +8,6 @@ SOURCES += main.cpp \
 
 HEADERS += \
     filetracker.h
+
+DISTFILES += \
+    file1.txt

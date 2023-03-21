@@ -5,22 +5,24 @@
 #include <QFileInfo>
 #include <QString>
 #include <QVector>
+#include <iostream>
 
-class StateFile:public QObject//отслеживает состояние каждого отдельного файла
+using namespace std;
+
+class StateFile : public QObject  //отслеживает состояние каждого отдельного файла
 {
      Q_OBJECT
 public:
     StateFile(const QString& FN);
-    ~StateFile();//Подумать нужен ли
-    QString GetFileName();
+    QString GetFileName();//Нужны ли геттеры?
     qint64 GetSize();
     bool GetExist();
 signals:
-    void FileCreated(const QString& FN,qint64 Size);//Изменения при создании файла
-    void FileSizeChanged(const QString& FN, qint64 newSize);//Изменения размера файла
-    void FileDeleted(const QString& FN);//Изменения при удалении файла
+    void FileCreated(QString FN,qint64 Size);//Изменения при создании файла
+    void FileSizeChanged(QString FN, qint64 newSize);//Изменения размера файла
+    void FileDeleted(QString FN);//Изменения при удалении файла
 
-private slots:
+public slots:
     void FileChanged(const QString& FN);
 private:
     QString FileName;
@@ -28,16 +30,22 @@ private:
     bool isExist;
 };
 
-class FileMonitor//Какая связь с классом StateFile
+class FileMonitor:public QObject//Какая связь с классом StateFile
 {
-    StateFile *objects;
     QVector<StateFile>objects;
 public:
-    // explicit FileMonitor(QObject* parent = nullptr);//какой конструктор, что он будет делать
-    FileMonitor();
-    ~FileMonitor();
-    bool AddFile(QString FN);//Добавился ли файл, добавить, если нет
-    bool DelFile(QString FN);//Удалился ли файл, если существует, удалить
+    //FileMonitor(QObject* parent = nullptr);//какой конструктор, что он будет делать
+    //FileMonitor();
+    //~FileMonitor();
+    bool AddFile(StateFile FN);//Добавился ли файл, добавить, если нет
+    bool DelFile(StateFile FN);//Удалился ли файл, если существует, удалить
+};
+
+class FilePrinter
+{
+    void PrintIfFileCreated(StateFile FN);
+    void PrintIfFileChanged(StateFile FN);
+    void PrintIfFileDeleted(StateFile FN);
 };
 
 
