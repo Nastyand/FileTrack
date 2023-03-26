@@ -3,10 +3,6 @@
 
 using namespace std;
 
-//class StateFile
-StateFile::StateFile(QObject* parent):QObject(parent)
-{
-}
 StateFile::StateFile(const QString& FN)
 {
     FileName = FN;
@@ -28,46 +24,51 @@ bool StateFile::GetExist()
     return isExist;
 }
 
-void StateFile::FileChanged()//Здесь ли выводить сообщения о состоянии файла или в принтере
+bool StateFile::operator==(StateFile file)
 {
+    if (FileName != file.FileName)return false;
+    return true;
+}
+
+//class FileMonitor
+FileMonitor::FileMonitor(QObject* parent):QObject(parent)
+{
+}
+
+void FileMonitor::FileChanged()
+{
+    for (int i = 0; i < objects.count(); i++)       // цикл по файлам
     {
-        QFileInfo info(FileName);
+        StateFile file(objects[i].GetFileName());
+        QFileInfo info(objects[i].GetFileName());
         bool exist = info.exists();
-        if (exist && exist != isExist) {//создание нового файла
-            size = info.size();
-            isExist = true;
-            emit FileCreated(FileName,size);
+        if (exist && exist != objects[i].GetExist()) {//создание нового файла
+            objects[i]=file;
+            emit FileCreated(objects[i].GetFileName(),objects[i].GetSize());
         }
-        else if (exist && size!=info.size()) {//изменение размера
-            size = info.size();
-            emit FileSizeChanged(FileName,size);
+        else if (exist && objects[i].GetSize()!=info.size()) {//изменение размера
+            objects[i]=file;
+            emit FileSizeChanged(objects[i].GetFileName(),objects[i].GetSize());
         }
-        else if (!exist && exist != isExist) {//удаление файла
-            isExist = false;
-            emit FileDeleted(FileName);
+        else if (!exist && exist != objects[i].GetExist()) {//удаление файла
+            objects[i]=file;
+            emit FileDeleted(objects[i].GetFileName());
         }
     }
 }
 
-//class FileMonitor
-/*FileMonitor::FileMonitor(QObject* parent):QObject(parent)
+void FileMonitor:: AddFile(QString FN)
 {
+    StateFile file(FN);
+    objects.append(file);
 }
-bool FileMonitor:: AddFile(QString FN)
+
+void FileMonitor:: DelFile(QString FN)
 {
-    //if(objects.contains(FN)){//Если такой файл существует, то возвращаем false, то есть файл не добавился
-    //   return false;
-    //}
-    //else{
-        objects.append(FN);
-    //    return true;//Иначе добавляем
-    //}
+    StateFile file(FN);
+    objects.removeOne(file);//Функция должна вернуть действительно ли был удален элемент
 }
-bool FileMonitor:: DelFile(QString FN)
-{
-    objects.removeOne(FN);//Функция должна вернуть действительно ли был удален элемент
-}
-*/
+
 //class FilePrinter
 FilePrinter::FilePrinter(QObject* parent):QObject(parent)
 {

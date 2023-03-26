@@ -9,14 +9,17 @@ using namespace std;
 int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
-    StateFile file1("C:/qtproject/FileTrack/file1.txt");
-    FilePrinter printer;
-    //FileMonitor Monitor;
-    //Monitor.AddFile("C:/qtproject/FileTrack/file1.txt");
-    QObject::connect(&file1, &StateFile::FileCreated, &printer, &FilePrinter::PrintIfFileCreated);
-    QObject::connect(&file1, &StateFile::FileSizeChanged, &printer, &FilePrinter::PrintIfFileChanged);
-    QObject::connect(&file1, &StateFile::FileDeleted, &printer, &FilePrinter::PrintIfFileDeleted);
+    FilePrinter* printer=new FilePrinter();// Создаем объект класса FilePrinter
+    FileMonitor* monitor = new FileMonitor(); // Создаем объект класса FileMonitor
+    monitor->AddFile("C:/qtproject/FileTrack/file1.txt");
+    monitor->AddFile("C:/qtproject/FileTrack/file2.txt");
+    monitor->DelFile("C:/qtproject/FileTrack/file2.txt");
+    QObject::connect(monitor, &FileMonitor::FileCreated, printer, &FilePrinter::PrintIfFileCreated);
+    QObject::connect(monitor, &FileMonitor::FileSizeChanged, printer, &FilePrinter::PrintIfFileChanged);
+    QObject::connect(monitor, &FileMonitor::FileDeleted, printer, &FilePrinter::PrintIfFileDeleted);
     //Написать таймер
-    //QTimer::singleShot(0, &app, SLOT(quit()));
-       return app.exec();
+    while (true) {
+               monitor->FileChanged();
+           }
+    return app.exec();
 }
