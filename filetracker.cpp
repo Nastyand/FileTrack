@@ -1,8 +1,7 @@
 #include "filetracker.h"
-#include <iostream>
 
-using namespace std;
-
+//class StateFile
+StateFile::StateFile(){}
 StateFile::StateFile(const QString& FN)
 {
     FileName = FN;
@@ -24,7 +23,7 @@ bool StateFile::GetExist()
     return isExist;
 }
 
-bool StateFile::operator==(StateFile file)
+bool StateFile::operator==(const StateFile file)const
 {
     if (FileName != file.FileName)return false;
     return true;
@@ -40,33 +39,35 @@ void FileMonitor::FileChanged()
     for (int i = 0; i < objects.count(); i++)       // цикл по файлам
     {
         StateFile file(objects[i].GetFileName());
-        QFileInfo info(objects[i].GetFileName());
-        bool exist = info.exists();
-        if (exist && exist != objects[i].GetExist()) {//создание нового файла
+        if (file.GetExist()==true && file.GetExist() != objects[i].GetExist()) {//создание нового файла
             objects[i]=file;
             emit FileCreated(objects[i].GetFileName(),objects[i].GetSize());
         }
-        else if (exist && objects[i].GetSize()!=info.size()) {//изменение размера
+        else if (file.GetExist()==true && objects[i].GetSize()!=file.GetSize()) {//изменение размера
             objects[i]=file;
             emit FileSizeChanged(objects[i].GetFileName(),objects[i].GetSize());
         }
-        else if (!exist && exist != objects[i].GetExist()) {//удаление файла
+        else if (file.GetExist()==false && file.GetExist() != objects[i].GetExist()) {//удаление файла
             objects[i]=file;
             emit FileDeleted(objects[i].GetFileName());
         }
     }
 }
 
-void FileMonitor:: AddFile(QString FN)
+bool FileMonitor:: AddFile(QString FN)
 {
     StateFile file(FN);
-    objects.append(file);
+    if (!objects.contains(file)){
+            objects.append(file);
+            return true;
+    }
+    return false;
 }
 
-void FileMonitor:: DelFile(QString FN)
+bool FileMonitor:: DelFile(QString FN)
 {
     StateFile file(FN);
-    objects.removeOne(file);//Функция должна вернуть действительно ли был удален элемент
+    return objects.removeOne(file);//Функция должна вернуть действительно ли был удален элемент
 }
 
 //class FilePrinter
