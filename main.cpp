@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     FileMonitor monitor;// Создаем объект класса FileMonitor
     monitor.AddFile("C:/qtproject/FileTrack/file1.txt");
     monitor.AddFile("C:/qtproject/FileTrack/file2.txt");
-    //monitor.AddFile("C:/qtproject/FileTrack/file1.txt");
+    monitor.AddFile("C:/qtproject/FileTrack/file1.txt");
     //monitor.DelFile("C:/qtproject/FileTrack/file2.txt");
     //monitor.DelFile("C:/qtproject/FileTrack/file3.txt");
     QObject::connect(&monitor, &FileMonitor::FileCreated, &printer, &FilePrinter::PrintIfFileCreated);

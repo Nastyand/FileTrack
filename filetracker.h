@@ -29,7 +29,7 @@ class FileMonitor:public QObject//класс, который следит за �
      Q_OBJECT
     QVector<StateFile>objects;
 public:
-    FileMonitor(QObject* parent = nullptr);//конструктор
+    FileMonitor();//конструктор
     bool AddFile(QString FN);//Добавился ли файл, добавить, если нет
     bool DelFile(QString FN);//Удалился ли файл, если существует, удалить
 signals:
@@ -45,7 +45,7 @@ class FilePrinter:public QObject//класс, который выводит со
 {
     Q_OBJECT
 public:
-     FilePrinter(QObject* parent = nullptr);//конструктор
+     FilePrinter();//конструктор
 
 public slots:
     void PrintIfFileCreated(QString FN, qint64 size);//вывод при создании файла
