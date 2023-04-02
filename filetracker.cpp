@@ -30,9 +30,7 @@ bool StateFile::operator==(const StateFile file)const
 }
 
 //class FileMonitor
-FileMonitor::FileMonitor(QObject* parent):QObject(parent)
-{
-}
+FileMonitor::FileMonitor(){}
 
 void FileMonitor::FileChanged()
 {
@@ -71,9 +69,7 @@ bool FileMonitor:: DelFile(QString FN)
 }
 
 //class FilePrinter
-FilePrinter::FilePrinter(QObject* parent):QObject(parent)
-{
-}
+FilePrinter::FilePrinter(){}
 void FilePrinter::PrintIfFileCreated(QString FN, qint64 size)
 {
     QByteArray ba = FN.toLocal8Bit();//Перевод из QString в char*
