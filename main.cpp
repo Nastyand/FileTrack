@@ -1,6 +1,8 @@
 #include <QCoreApplication>
 #include<QTimer>
-#include "filetracker.h"
+#include "filestate.h"
+#include "filemonitor.h"
+#include "fileprinter.h"
 
 int main(int argc, char *argv[])
 {
