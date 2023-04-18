@@ -7,8 +7,9 @@
 int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
+    FileMonitor &monitor = FileMonitor::Instance();//Создаем объект класса FileMonitor
     FilePrinter printer;// Создаем объект класса FilePrinter
-    FileMonitor monitor;// Создаем объект класса FileMonitor
+    //FileMonitor monitor;// Создаем объект класса FileMonitor
     monitor.AddFile("C:/qtproject/FileTrack/file1.txt");
     monitor.AddFile("C:/qtproject/FileTrack/file2.txt");
     monitor.AddFile("C:/qtproject/FileTrack/file1.txt");

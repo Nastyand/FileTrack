@@ -9,10 +9,11 @@ class FileMonitor:public QObject//класс, который следит за �
 {
      Q_OBJECT
     QVector<StateFile>objects;
-public:
     FileMonitor();//конструктор
+public:
     bool AddFile(QString FN);//Добавился ли файл, добавить, если нет
     bool DelFile(QString FN);//Удалился ли файл, если существует, удалить
+    static FileMonitor &Instance();//Singleton
 signals:
     void FileCreated(QString FN,qint64 Size);//Изменения при создании файла
     void FileSizeChanged(QString FN, qint64 newSize);//Изменения размера файла

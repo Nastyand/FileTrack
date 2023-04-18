@@ -21,7 +21,11 @@ void FileMonitor::FileChanged()
         }
     }
 }
-
+FileMonitor &FileMonitor::Instance()
+{
+    static FileMonitor s;
+    return s;
+}
 bool FileMonitor:: AddFile(QString FN)
 {
     StateFile file(FN);
