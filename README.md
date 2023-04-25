@@ -18,4 +18,4 @@
 2.class FileMonitor-класс, следящий за состояниями всех файлов
 3.class FilePrinter-класс, выводящий сообщения на консоль
 
-![uml](https://github.com/Nastyand/FileTrack/commit/5492efc96523d9a015d9682c5189d1a88aea2ee5)
+![uml](https://github.com/Nastyand/FileTrack/blob/5492efc96523d9a015d9682c5189d1a88aea2ee5/filetrack_uml.png)
