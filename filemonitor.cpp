@@ -1,35 +1,5 @@
-#include "filetracker.h"
+#include "filemonitor.h"
 
-//class StateFile
-StateFile::StateFile(){}
-StateFile::StateFile(const QString& FN)
-{
-    FileName = FN;
-    QFileInfo info(FileName);
-    size = info.size();
-    isExist = info.exists();
-}
-
-QString StateFile::GetFileName()
-{
-    return FileName;
-}
-qint64 StateFile::GetSize()
-{
-    return size;
-}
-bool StateFile::GetExist()
-{
-    return isExist;
-}
-
-bool StateFile::operator==(const StateFile file)const
-{
-    if (FileName != file.FileName)return false;
-    return true;
-}
-
-//class FileMonitor
 FileMonitor::FileMonitor(){}
 
 void FileMonitor::FileChanged()
@@ -51,7 +21,11 @@ void FileMonitor::FileChanged()
         }
     }
 }
-
+FileMonitor &FileMonitor::Instance()
+{
+    static FileMonitor s;
+    return s;
+}
 bool FileMonitor:: AddFile(QString FN)
 {
     StateFile file(FN);
@@ -68,23 +42,4 @@ bool FileMonitor:: DelFile(QString FN)
     return objects.removeOne(file);//Функция должна вернуть действительно ли был удален элемент
 }
 
-//class FilePrinter
-FilePrinter::FilePrinter(){}
-void FilePrinter::PrintIfFileCreated(QString FN, qint64 size)
-{
-    QByteArray ba = FN.toLocal8Bit();//Перевод из QString в char*
-    const char *FN1 = ba.data();
-    cout<<"File "<<FN1<<" exists, his size "<<size<<endl;
-}
-void FilePrinter::PrintIfFileChanged(QString FN, qint64 size)
-{
-    QByteArray ba = FN.toLocal8Bit();
-    const char *FN1 = ba.data();
-    cout<<"File "<<FN1<<" changed, his size "<<size<<endl;
-}
-void FilePrinter::PrintIfFileDeleted(QString FN)
-{
-    QByteArray ba = FN.toLocal8Bit();
-    const char *FN1 = ba.data();
-    cout<<"File "<<FN1<<" deleted"<<endl;
-}
+

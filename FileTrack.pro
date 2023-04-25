@@ -4,10 +4,14 @@ CONFIG -= app_bundle
 CONFIG += qt
 
 SOURCES += main.cpp \
-    filetracker.cpp
+    filemonitor.cpp \
+    filestate.cpp \
+    fileprinter.cpp
 
 HEADERS += \
-    filetracker.h
+    filestate.h \
+    filemonitor.h \
+    fileprinter.h
 
 DISTFILES += \
     file1.txt
