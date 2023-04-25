@@ -17,3 +17,5 @@
 1.class StateFile-класс,хранящий состояние 1 файла
 2.class FileMonitor-класс, следящий за состояниями всех файлов
 3.class FilePrinter-класс, выводящий сообщения на консоль
+
+![uml](https://github.com/Nastyand/FileTrack/commit/5492efc96523d9a015d9682c5189d1a88aea2ee5)
